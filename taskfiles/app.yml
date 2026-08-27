@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+vars:
+  BIN_DIR: "{{.ROOT_DIR}}/bin"
+  APP_DIR: "{{.BIN_DIR}}/go-simple-service-template"
+  MAIN_DIR: "{{.ROOT_DIR}}/cmd/go-simple-service-template"
+  CONFIG_DIR: "{{.ROOT_DIR}}/config.yaml"
+
+tasks:
+  tidy:
+    desc: Run go tidy
+    cmds:
+      - go mod tidy
+      - echo "✅ tidy done"
+    silent: true
+  test:
+    desc: Run go test
+    cmds:
+      - go test ./...
+      - echo "✅ test done"
+    silent: true
+  vet:
+    desc: Run go vet
+    cmds:
+      - go vet ./...
+      - echo "✅ vet done"
+    silent: true
+  build:
+    desc: Build the application
+    cmds:
+      - go build -o {{.APP_DIR}} {{.MAIN_DIR}}
+      - echo "✅ build done"
+    silent: true
+  run:
+    desc: Run the application
+    deps: [tidy,build]
+    prefix: "go"
+    cmds:
+      - "{{.APP_DIR}} --config {{.CONFIG_DIR}}"
+    silent: true
+  release:
+    desc: Release the application
+    deps: [tidy, test, vet, build]
+    cmds:
+      - echo "✅ release done"
+    silent: true
