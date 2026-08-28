@@ -8,3 +8,6 @@ includes:
   app:
     taskfile: ./taskfiles/app.yml
     aliases: [app, a]
+  frontend:
+    taskfile: ./taskfiles/frontend.yml
+    aliases: [frontend, f]
