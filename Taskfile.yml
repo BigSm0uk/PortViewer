@@ -6,8 +6,16 @@ output: 'prefixed'
 
 includes:
   app:
-    taskfile: ./taskfiles/app.yml
-    aliases: [app, a]
+    taskfile: ./taskfiles/back.yml
+    aliases: [back, b]
   frontend:
     taskfile: ./taskfiles/frontend.yml
     aliases: [frontend, f]
+
+tasks:
+  dev:
+    desc: Run app in dev mode
+    deps: [f:build]
+    cmds:
+      - task b:dev
+    silent: true

@@ -40,6 +40,13 @@ tasks:
     cmds:
       - "{{.APP_DIR}} --config {{.CONFIG_DIR}}"
     silent: true
+  dev:
+    desc: Run the application in dev mode
+    deps: [tidy]
+    prefix: "go"
+    cmds:
+      - "go run {{.MAIN_DIR}} --config {{.CONFIG_DIR}}"
+    silent: true
   release:
     desc: Release the application
     deps: [tidy, test, vet, build]

@@ -5,11 +5,17 @@ import (
 
 	"github.com/bigsm0uk/port-viewer/internal/webui"
 	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
 )
 
 func (a *Application) Routes(e *echo.Echo) {
+	e.Use(middleware.Recover())
+
+	api := e.Group("/api")
+	api.Use(middleware.RequestLogger())
+	
+	api.GET("/ping", a.handlePing)
 	e.StaticFS("/", echo.MustSubFS(webui.EmbedFS, "dist"))
-	e.GET("/ping", a.handlePing)
 }
 
 func (a *Application) handlePing(c *echo.Context) error {
