@@ -2,4 +2,4 @@ package webui
 import "embed"
 
 //go:embed dist/*
-var embedFS embed.FS
+var EmbedFS embed.FS

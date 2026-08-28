@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"net/http"
 	"os"
 
 	"github.com/bigsm0uk/port-viewer/internal/app/config"
 	"github.com/bigsm0uk/port-viewer/internal/app/logger"
+	"github.com/labstack/echo/v5"
 	"go.uber.org/zap"
 )
 
@@ -16,7 +16,7 @@ type Application struct {
 	logger *zap.Logger
 	cfg    *config.AppConfig
 
-	httpServer *http.Server
+	httpServer *echo.Echo
 }
 
 func New() *Application {
@@ -45,18 +45,17 @@ func (a *Application) Logger() *zap.Logger {
 	}
 	return a.logger
 }
-func (a *Application) HttpServer(mux *http.ServeMux) *http.Server {
+func (a *Application) HttpServer() *echo.Echo {
 	if a.httpServer == nil {
-		a.httpServer = &http.Server{
-			Addr:    net.JoinHostPort(a.Config().Server.Host, a.Config().Server.Port),
-			Handler: mux,
-		}
+		a.httpServer = echo.New()
+		a.Routes(a.httpServer)
 	}
 	return a.httpServer
 }
 func (a *Application) Run(ctx context.Context) error {
-	a.Logger().Info("Server starting", zap.String("Addres", net.JoinHostPort(a.Config().Server.Host, a.Config().Server.Port)))
-	if err := a.HttpServer(a.Routes()).ListenAndServe(); err != nil {
+	sc := echo.StartConfig{Address: net.JoinHostPort(a.Config().Server.Host, a.Config().Server.Port), HideBanner: true}
+
+	if err := sc.Start(ctx, a.HttpServer()); err != nil {
 		return err
 	}
 	return nil
