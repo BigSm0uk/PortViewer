@@ -1,4 +1,4 @@
-module github.com/bigsm0uk/go-simple-service-template
+module github.com/bigsm0uk/port-viewer
 
 go 1.27.0
 

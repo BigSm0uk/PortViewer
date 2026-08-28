@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/bigsm0uk/go-simple-service-template/internal/app"
+	"github.com/bigsm0uk/port-viewer/internal/app"
 	"go.uber.org/zap"
 )
 

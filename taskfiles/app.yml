@@ -4,8 +4,8 @@ version: '3'
 
 vars:
   BIN_DIR: "{{.ROOT_DIR}}/bin"
-  APP_DIR: "{{.BIN_DIR}}/go-simple-service-template"
-  MAIN_DIR: "{{.ROOT_DIR}}/cmd/go-simple-service-template"
+  APP_DIR: "{{.BIN_DIR}}/port-viewer"
+  MAIN_DIR: "{{.ROOT_DIR}}/cmd/port-viewer"
   CONFIG_DIR: "{{.ROOT_DIR}}/config.yaml"
 
 tasks:

@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bigsm0uk/go-simple-service-template/internal/app/config"
-	"github.com/bigsm0uk/go-simple-service-template/internal/app/logger"
+	"github.com/bigsm0uk/port-viewer/internal/app/config"
+	"github.com/bigsm0uk/port-viewer/internal/app/logger"
 	"go.uber.org/zap"
 )
 
