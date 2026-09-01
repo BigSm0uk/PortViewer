@@ -15,7 +15,6 @@ includes:
 tasks:
   dev:
     desc: Run app in dev mode
-    deps: [f:build]
     cmds:
-      - task b:dev
+      - task --parallel f:dev b:dev
     silent: true
