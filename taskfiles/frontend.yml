@@ -15,3 +15,8 @@ tasks:
       - rm -rf -- "{{.WEBUI_DIST_DIR}}"
       - mkdir -p "{{.WEBUI_DIST_DIR}}"
       - cp -R "{{.WEB_BUILD_DIR}}/." "{{.WEBUI_DIST_DIR}}/"
+  dev:
+    desc: Start the frontend development server
+    prefix: svelte
+    cmds:
+      - bun run --cwd "{{.WEB_DIR}}" dev
