@@ -8,13 +8,16 @@ import (
 	"github.com/labstack/echo/v5/middleware"
 )
 
-func (a *Application) Routes(e *echo.Echo) {
+func (a *Application) Routes() {
+	e := a.httpServer
+
 	e.Use(middleware.Recover())
 
 	api := e.Group("/api")
 	api.Use(middleware.RequestLogger())
-	
+
 	api.GET("/ping", a.handlePing)
+	api.GET("/listeners", a.CollectorHandler().Listeners)
 	e.StaticFS("/", echo.MustSubFS(webui.EmbedFS, "dist"))
 }
 

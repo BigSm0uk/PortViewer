@@ -8,19 +8,29 @@ import (
 
 	"github.com/bigsm0uk/port-viewer/internal/app/config"
 	"github.com/bigsm0uk/port-viewer/internal/app/logger"
+	"github.com/bigsm0uk/port-viewer/internal/collector"
 	"github.com/labstack/echo/v5"
 	"go.uber.org/zap"
 )
 
 type Application struct {
-	logger *zap.Logger
-	cfg    *config.AppConfig
-
+	logger     *zap.Logger
+	cfg        *config.AppConfig
 	httpServer *echo.Echo
+
+	collector        *collector.Collector
+	collectorHandler *collector.Handler
 }
 
 func New() *Application {
 	return &Application{}
+}
+
+// Init Инициализирует приложение, решая проблему гонки данных
+func (a *Application) Init() *Application {
+	a.Collector()
+	a.HttpServer()
+	return a
 }
 
 func (a *Application) Config() *config.AppConfig {
@@ -45,10 +55,25 @@ func (a *Application) Logger() *zap.Logger {
 	}
 	return a.logger
 }
+
+func (a *Application) CollectorHandler() *collector.Handler {
+	if a.collectorHandler == nil {
+		a.collectorHandler = collector.NewHandler(a.Logger(), a.Collector())
+	}
+	return a.collectorHandler
+}
+
+func (a *Application) Collector() *collector.Collector {
+	if a.collector == nil {
+		a.collector = collector.New(a.Logger())
+	}
+	return a.collector
+}
+
 func (a *Application) HttpServer() *echo.Echo {
 	if a.httpServer == nil {
 		a.httpServer = echo.New()
-		a.Routes(a.httpServer)
+		a.Routes()
 	}
 	return a.httpServer
 }
