@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	a := app.New()
+	a := app.New().Init()
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 

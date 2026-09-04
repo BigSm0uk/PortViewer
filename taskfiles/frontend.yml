@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+vars:
+  WEB_DIR: '{{.ROOT_DIR}}/web'
+  WEB_BUILD_DIR: '{{.WEB_DIR}}/build'
+  WEBUI_DIST_DIR: '{{.ROOT_DIR}}/internal/webui/dist'
+
+tasks:
+  build:
+    desc: Build the frontend into internal/webui/dist
+    cmds:
+      - bun run --cwd "{{.WEB_DIR}}" build
+      - rm -rf -- "{{.WEBUI_DIST_DIR}}"
+      - mkdir -p "{{.WEBUI_DIST_DIR}}"
+      - cp -R "{{.WEB_BUILD_DIR}}/." "{{.WEBUI_DIST_DIR}}/"
+  dev:
+    desc: Start the frontend development server
+    prefix: svelte
+    cmds:
+      - bun run --cwd "{{.WEB_DIR}}" dev

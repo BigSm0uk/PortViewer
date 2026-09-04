@@ -1,18 +1,26 @@
 package app
 
-import "net/http"
+import (
+	"net/http"
 
-func (a *Application) Routes() *http.ServeMux {
-	mux := http.NewServeMux()
+	"github.com/bigsm0uk/port-viewer/internal/webui"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
+)
 
-	mux.HandleFunc("GET /ping", a.handlePing)
+func (a *Application) Routes() {
+	e := a.httpServer
 
-	return mux
+	e.Use(middleware.Recover())
+
+	api := e.Group("/api")
+	api.Use(middleware.RequestLogger())
+
+	api.GET("/ping", a.handlePing)
+	api.GET("/listeners", a.CollectorHandler().Listeners)
+	e.StaticFS("/", echo.MustSubFS(webui.EmbedFS, "dist"))
 }
 
-func (a *Application) handlePing(w http.ResponseWriter, r *http.Request) {
-	a.Logger().Debug("ping request")
-
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	_, _ = w.Write([]byte("pong"))
+func (a *Application) handlePing(c *echo.Context) error {
+	return c.String(http.StatusOK, "Hello, World!")
 }
