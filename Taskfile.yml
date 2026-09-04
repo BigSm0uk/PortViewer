@@ -13,8 +13,7 @@ includes:
     aliases: [frontend, f]
 
 tasks:
-  dev:
-    desc: Run app in dev mode
-    cmds:
-      - task --parallel f:dev b:dev
-    silent: true
+    dev:
+      desc: Run app in dev mode
+      deps: [f:dev, b:dev]
+      silent: true
